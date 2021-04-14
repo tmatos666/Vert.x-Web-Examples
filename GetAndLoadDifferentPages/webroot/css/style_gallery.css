@@ -1,0 +1,108 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    background-color: bisque;
+}
+.blog {
+    background: bisque;
+    height: 100%;
+}
+#competitions{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid black;
+}
+
+#competitions th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 10%;
+}
+.column .space{
+    padding: 10px;
+}
+
+.rnd_image img {
+    margin-top: 10px;
+    display: block;
+    max-width:300px;
+    width: auto;
+    height: auto;
+}
+
+.header {
+    background-color: bisque;
+    height: 100%;
+    padding-bottom: 1em;
+    padding-top: 1em;
+}
+.header img { 
+    float: left;
+}
+.header h1,h3 {
+    margin-top: 10px;
+    margin-left: 100px;
+    margin-bottom: 0.25em;
+}
+.menu ul {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+.menu li {
+    float: left;
+}
+.menu li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+.menu li a:hover {
+    background-color: chocolate;
+}
+
+.button_rnd {
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 0px;
+}
+
+button {
+    margin-left: 0em;
+    height: 40px;
+    width: 150px;
+    font-weight: bold;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border: 1px solid;
+    color: black;
+}
+
+button:hover {
+    border-color: #000066;
+    box-shadow: 5px 0px 9px black;
+    background-color: #66FFFF;
+    color: black;
+    font-weight: bold;
+}
