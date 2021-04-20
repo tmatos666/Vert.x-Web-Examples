@@ -13,4 +13,4 @@ Examples consists of:
  
  5 - Vert.x examples using Freemarker tamplete engine.
  
- 6 - A simple CRUD application using Vert.x with REST examples
+ 6 - A simple CRUD application using Vert.x with REST examples (based on https://vertx.io/blog/some-rest-with-vert-x/)
