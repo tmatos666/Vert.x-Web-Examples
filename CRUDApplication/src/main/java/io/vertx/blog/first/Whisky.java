@@ -1,8 +1,8 @@
 package io.vertx.blog.first;
 
-import io.vertx.core.json.JsonObject;
+import java.util.Objects;
 
-public class Whisky {
+public class Whisky implements Comparable<Whisky>{
 
   private int id;
 
@@ -10,25 +10,10 @@ public class Whisky {
 
   private String origin;
 
-  public Whisky(String name, String origin) {
-    this.name = name;
-    this.origin = origin;
-  }
-  
   public Whisky(int id, String name, String origin) {
     this.name = name;
     this.origin = origin;
     this.id = id;
-  }
-  
-  
-
-  public JsonObject toJson() {
-    JsonObject json = new JsonObject()
-        .put("name", name)
-        .put("origin", origin);
-        json.put("_id", id);
-    return json;
   }
 
   public String getName() {
@@ -57,4 +42,48 @@ public class Whisky {
     this.id = id;
     return this;
   }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 73 * hash + this.id;
+        hash = 73 * hash + Objects.hashCode(this.name);
+        hash = 73 * hash + Objects.hashCode(this.origin);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Whisky other = (Whisky) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.origin, other.origin)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Whisky{" + "id=" + id + ", name=" + name + ", origin=" + origin + '}';
+    }
+
+    @Override
+    public int compareTo(Whisky o) {
+        return this.getId() - o.getId();
+    }
+   
 }

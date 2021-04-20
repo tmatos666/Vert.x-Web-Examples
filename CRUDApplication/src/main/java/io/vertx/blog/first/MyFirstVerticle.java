@@ -13,18 +13,21 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import java.util.List;
 
 /**
+ * Reference site: https://vertx.io/blog/some-rest-with-vert-x/
+ *
+ *
  * This is a verticle. A verticle is a _Vert.x component_. This verticle is
  * implemented in Java, but you can implement them in JavaScript, Groovy, Ruby
  * or Ceylon.
  */
 public class MyFirstVerticle extends AbstractVerticle {
 
-    public static final String COLLECTION = "whiskies";
-    List<Whisky> list;
+    private List<Whisky> list;
 
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
@@ -46,26 +49,33 @@ public class MyFirstVerticle extends AbstractVerticle {
     public void start(Future<Void> fut) {
 
         createSomeData(
-                (nothing) -> startWebApp(
+                (someData) -> startWebApp(
                         (http) -> completeStartup(http, fut)
-                ), fut);
+                ),
+                fut);
     }
 
     private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
         // Create a router object.
         Router router = Router.router(vertx);
 
+        //making the path "/src/main/resources/assets/" as the webroot path alias assets
         router.route("/src/main/resources/assets/*").handler(StaticHandler.create("assets"));
-        // Bind "/" to our hello message.
+
+        // Bind "/" to our index page.
         router.get("/").handler(ctx -> {
             ctx.response().sendFile("assets/index.html");
         });
 
+        //get all brands
         router.get("/all").handler(this::getAll);
+        //create brand
         router.route("/*").handler(BodyHandler.create());
+        //add brand
         router.post("/add").handler(this::addOne);
-        router.get("/get/:id").handler(this::getOne);
+        //update a specific brand
         router.put("/update/:id").handler(this::updateOne);
+        //delete a brand
         router.delete("/delete/:id").handler(this::deleteOne);
 
         // Create the HTTP server and pass the "accept" method to the request handler.
@@ -76,6 +86,7 @@ public class MyFirstVerticle extends AbstractVerticle {
                         // Retrieve the port from the configuration,
                         // default to 8080.
                         config().getInteger("http.port", 8080),
+                        //calling the next handle, i.e. the completeStartup method
                         next::handle
                 );
     }
@@ -83,27 +94,37 @@ public class MyFirstVerticle extends AbstractVerticle {
     private void completeStartup(AsyncResult<HttpServer> http, Future<Void> fut) {
         if (http.succeeded()) {
             fut.complete();
-            System.out.println("Connected!"); 
-       } else {
+            System.out.println("Connected!");
+        } else {
             fut.fail(http.cause());
         }
     }
 
-    private int getIdWhiskey(int id) {
-        int i = 0;
+    //getting a object based on the attribute id
+    private Whisky getWhiskey(int id) {
         for (Whisky whisky1 : list) {
             if (whisky1.getId() == id) {
+                return whisky1;
+            }
+        }
+        return null;
+    }
+
+    //getting a new id for the new object
+    private int getNewId(List<Whisky> list) {
+        int i = 1;
+        for (Whisky w : list) {
+            if (getWhiskey(i) == null) {
                 return i;
             }
             i++;
         }
-        return -1;
+        return i;
     }
 
     private void addOne(RoutingContext routingContext) {
-        final Whisky whisky = Json.decodeValue(routingContext.getBodyAsString(),
-                Whisky.class);
-        whisky.setId(list.size());
+        JsonObject j = routingContext.getBodyAsJson();
+        Whisky whisky = new Whisky(getNewId(list), j.getString("name"), j.getString("origin"));
         list.add(whisky);
 
         routingContext.response()
@@ -112,52 +133,24 @@ public class MyFirstVerticle extends AbstractVerticle {
                 .end(Json.encodePrettily(whisky));
     }
 
-    private void getOne(RoutingContext routingContext) {
-        final String id = routingContext.request().getParam("id");
-        if (id == null) {
-            routingContext.response().setStatusCode(400).end();
-        } else {
-//            mongo.findOne(COLLECTION, new JsonObject().put("_id", id), null, ar -> {
-//                if (ar.succeeded()) {
-//                    if (ar.result() == null) {
-//                        routingContext.response().setStatusCode(404).end();
-//                        return;
-//                    }
-//                    routingContext.response()
-//                            .setStatusCode(200)
-//                            .putHeader("content-type", "application/json; charset=utf-8")
-//                            .end(Json.encodePrettily(getIdWhiskey(Integer.parseInt(id))));
-//                } else {
-//                    routingContext.response().setStatusCode(404).end();
-//                }
-//            });
-        }
-    }
-
     private void updateOne(RoutingContext routingContext) {
         final String id = routingContext.request().getParam("id");
         JsonObject json = routingContext.getBodyAsJson();
         if (id == null || json == null) {
             routingContext.response().setStatusCode(400).end();
         } else {
-//            mongo.update(COLLECTION,
-//                    new JsonObject().put("_id", id), // Select a unique document
-//                    // The update syntax: {$set, the json object containing the fields to update}
-//                    new JsonObject()
-//                            .put("$set", json),
-//                    v -> {
-//                        if (v.failed()) {
-//                            routingContext.response().setStatusCode(404).end();
-//                        } else {
-//                            Whisky whiskey = list.get(getIdWhiskey(Integer.parseInt(id)));
-//                            whiskey.setName( json.getString("name"));
-//                            whiskey.setOrigin(json.getString("origin"));
-//                            routingContext.response()
-//                                    .putHeader("content-type", "application/json; charset=utf-8")
-//                                    .end(Json.encodePrettily(whiskey));
-//                        }
-//                    });
+            Whisky w = getWhiskey(Integer.parseInt(id));
+            if (w == null) {
+                routingContext.response().setStatusCode(404).end();
+            } else {
+                w.setName(json.getString("name"));
+                w.setOrigin(json.getString("origin"));
+                routingContext.response()
+                        .putHeader("content-type", "application/json; charset=utf-8")
+                        .end(Json.encodePrettily(w));
+            }
         }
+
     }
 
     private void deleteOne(RoutingContext routingContext) {
@@ -165,13 +158,14 @@ public class MyFirstVerticle extends AbstractVerticle {
         if (id == null) {
             routingContext.response().setStatusCode(400).end();
         } else {
-            list.remove(getIdWhiskey(Integer.parseInt(id)));
+            list.remove(getWhiskey(Integer.parseInt(id)));
             routingContext.response().setStatusCode(204).end();
-            
+
         }
     }
 
     private void getAll(RoutingContext routingContext) {
+        Collections.sort(list);
         List<Whisky> whiskies = list;
         routingContext.response()
                 .putHeader("content-type", "application/json; charset=utf-8")
@@ -179,17 +173,15 @@ public class MyFirstVerticle extends AbstractVerticle {
     }
 
     private void createSomeData(Handler<AsyncResult<Void>> next, Future<Void> fut) {
-        Whisky bowmore = new Whisky(1,"Bowmore 15 Years Laimrig", "Scotland, Island");
-        Whisky talisker = new Whisky(2,"Talisker 10 North", "Scotland, Island");
-        Whisky talisker1 = new Whisky(3,"Talisker 20 North", "Scotland, Island");
-        Whisky talisker2 = new Whisky(4,"Blend 30 South", "Scotland, Island");
+        Whisky bowmore = new Whisky(1, "Bowmore 15 Years Laimrig", "Scotland, Island");
+        Whisky talisker = new Whisky(2, "Talisker 10 North", "Scotland, Island");
+        Whisky talisker1 = new Whisky(3, "Talisker 20 North", "Scotland, Island");
+        Whisky talisker2 = new Whisky(4, "Blend 30 South", "Scotland, Island");
         list = new ArrayList<>();
         list.add(bowmore);
         list.add(talisker);
         list.add(talisker1);
         list.add(talisker2);
-//        System.out.println(bowmore.toJson());
-
         next.handle(Future.<Void>succeededFuture());
     }
 }
