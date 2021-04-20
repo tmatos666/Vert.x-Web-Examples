@@ -6,14 +6,12 @@ package redsi.form1;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
-import io.vertx.core.file.FileSystemOptions;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import static io.vertx.ext.web.handler.StaticHandler.DEFAULT_WEB_ROOT;
 
@@ -33,7 +31,7 @@ public class Servidor extends AbstractVerticle {
 
         // cria servidor HTTP     
         HttpServerOptions options = new HttpServerOptions();
-        options.setPort(8080);
+        options.setPort(8080); 
         vertx.createHttpServer(options)
                 .requestHandler(router)
                 .listen(res -> {
