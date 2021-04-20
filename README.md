@@ -12,3 +12,5 @@ Examples consists of:
  4 - Submit a form; The server work with form data; server send data again to the same HTML page.
  
  5 - Vert.x examples using Freemarker tamplete engine.
+ 
+ 6 - A simple CRUD application using Vert.x with REST examples
