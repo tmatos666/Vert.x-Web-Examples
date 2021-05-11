@@ -58,7 +58,7 @@ public class MyFirstVerticle extends AbstractVerticle {
     private void startWebApp(Handler<AsyncResult<HttpServer>> next) {
         // Create a router object.
         Router router = Router.router(vertx);
-
+        System.out.println("");
         //making the path "/src/main/resources/assets/" as the webroot path alias assets
         router.route("/src/main/resources/assets/*").handler(StaticHandler.create("assets"));
 

@@ -14,3 +14,5 @@ Examples consists of:
  5 - VertxTemplateEngine: Vert.x examples using Freemarker tamplete engine.
  
  6 - CRUDApplication: A simple CRUD application using Vert.x with REST examples (based on https://vertx.io/blog/some-rest-with-vert-x/)
+ 
+ 7 - VertxRedirectToPageHandler: A simple application using Vert.x. Sending data from cliente to server using form and Json. Simple demonstration for redirecting pages using "putHeader("content-type", "text/html")"
