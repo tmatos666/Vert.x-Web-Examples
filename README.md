@@ -16,3 +16,5 @@ Examples consists of:
  6 - CRUDApplication: A simple CRUD application using Vert.x with REST examples (based on https://vertx.io/blog/some-rest-with-vert-x/)
  
  7 - VertxRedirectToPageHandler: A simple application using Vert.x. Sending data from cliente to server using form and Json. Simple demonstration for redirecting pages using "putHeader("content-type", "text/html")"
+ 
+ 8 - URI redirect and load page with Information based on ID. Index.html redirect to page2.html (aluno/1) and this page has an onload javascript function that based on the uri fetch info from the server
