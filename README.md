@@ -17,4 +17,6 @@ Examples consists of:
  
  7 - VertxRedirectToPageHandler: A simple application using Vert.x. Sending data from cliente to server using form and Json. Simple demonstration for redirecting pages using "putHeader("content-type", "text/html")"
  
- 8 - URI redirect and load page with Information based on ID. Index.html redirect to page2.html (aluno/1) and this page has an onload javascript function that based on the uri fetch info from the server
+ 8 - URIredirectAndLoadpageWithInfo: URI redirect and load page with Information based on ID. Index.html redirect to page2.html (aluno/1) and this page has an onload javascript function that based on the uri fetch info from the server
+ 
+ 9 - VertxMultipleDatainJsonObject: Creates an JsonObject with multiple java objects and loads it in the index page apon an onload event
