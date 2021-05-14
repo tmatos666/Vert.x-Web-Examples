@@ -20,3 +20,5 @@ Examples consists of:
  8 - URIredirectAndLoadpageWithInfo: URI redirect and load page with Information based on ID. Index.html redirect to page2.html (aluno/1) and this page has an onload javascript function that based on the uri fetch info from the server
  
  9 - VertxMultipleDatainJsonObject: Creates an JsonObject with multiple java objects and loads it in the index page apon an onload event
+ 
+ 10 - VertxUploadFiles: Upload and save file (or image). This file will be renamed automatically.
