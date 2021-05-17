@@ -15,6 +15,11 @@ function uploadImage() {
                 let li = '<tr><th>Pasta e Nome do ficheiro (este foi renomeado e colocado na pasta uploads)</th></tr>';
                 li = li + '<tr><td>' + data.nome + '</td><td>';
                 document.getElementById("resposta").innerHTML = li;
+                
+                var str = data.nome;
+                var res = str.replace("webroot\\", "");
+  
+                document.getElementById("imgUploaded").src = res;
             })
             .catch((err) => console.log(err));
 }

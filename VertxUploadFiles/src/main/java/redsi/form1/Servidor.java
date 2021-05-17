@@ -28,7 +28,7 @@ public class Servidor extends AbstractVerticle {
         // por pré-definição serve index.html
         router.route("/*").handler(StaticHandler.create(webRoot));
 
-        router.route().handler(BodyHandler.create());
+        router.route().handler(BodyHandler.create().setUploadsDirectory(webRoot+"/fileUploads"));
 
         router.route("/loadimage").handler(this::loadImage);
 

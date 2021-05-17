@@ -21,4 +21,4 @@ Examples consists of:
  
  9 - VertxMultipleDatainJsonObject: Creates an JsonObject with multiple java objects and loads it in the index page apon an onload event
  
- 10 - VertxUploadFiles: Upload and save file (or image). This file will be renamed automatically.
+ 10 - VertxUploadFiles: Upload and save file (or image) in a specific location. This file will be renamed automatically.
